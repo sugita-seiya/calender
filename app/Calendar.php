@@ -82,6 +82,11 @@ EOS;
             }
             $this->html .= "</tr>";
 
+
+
+
+            
+
         return $this->html .= '</table>';
     }
   }

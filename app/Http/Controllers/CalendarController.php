@@ -68,10 +68,20 @@ class CalendarController extends Controller
         if (isset($request->id)) {
             $holiday = Holiday::where('id', '=', $request->id)->first();
             $holiday->delete();
+
+
+
+            
         }
         // 休日データ取得
         $data = new Holiday();
         $list = Holiday::all();
         return view('calendar.holiday', ['list' => $list, 'data' => $data]);
+
+
+
+
+
+
     }
 }
