@@ -145,6 +145,9 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'day' => '日付は必要です',
+        'description' => '説明は必要です',
+    ],
 
 ];

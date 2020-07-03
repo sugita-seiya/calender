@@ -5,7 +5,6 @@
 
 
 namespace App;
-
 use Illuminate\Database\Eloquent\Model;
 
 class Calendar extends Model
@@ -22,6 +21,13 @@ class Calendar extends Model
     {
         $year= $y;
         $month= $m;
+        // システム日付を取得する。
+        if($year==null){
+            $year= date("Y");
+            $month=date("m");
+        }
+        $firstWeekDay = date("w",mktime(0,0,0,$month,1,$year));         // 1日の曜日(0:日曜日、6:土曜日)
+        $lastDay = date("t",mktime(0,0,0,$month,1,$year));              // 指定した月の最終日
         // 前月
         $prev = strtotime('-1 month',mktime(0, 0, 0, $month, 1, $year));
         $prev_year = date("Y",$prev);
@@ -30,13 +36,6 @@ class Calendar extends Model
         $next = strtotime('+1 month',mktime(0, 0, 0, $month, 1, $year));
         $next_year = date("Y",$next);
         $next_month = date("m",$next);
-        if($year==null){
-            // システム日付を取得する。
-            $year= date("Y");
-            $month=date("m");
-        }
-        $firstWeekDay = date("w",mktime(0,0,0,$month,1,$year));         // 1日の曜日(0:日曜日、6:土曜日)
-        $lastDay = date("t",mktime(0,0,0,$month,1,$year));              // 指定した月の最終日
          // 日曜日からカレンダーを表示するため前月の余った日付をループの初期値にする
         $day= 1 - $firstWeekDay;
         // ヒアドキュメント
@@ -65,29 +64,23 @@ EOS;
             for ($i = 0; $i<7; $i++){
                 if ($day <= 0 || $day > $lastDay) {
                     //先月・来月の日付の場合
-                    //日付に応じて休日の情報を表示
+                    $this->html .= "<td>&nbsp;</td>";
+                } else {
                     $this->html .= "<td>" . $day ."&nbsp";
                     $target = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
                     foreach($this->holidays as $val) {
                         if ($val->day == $target) {
-                            $this->html .= $val->description;
+                            $this->html .= e($val->description);
                             break;
                         }
                     }
-                    $this->html .= "</td>";
-                } else {
-                    $this->html .= "<tb>" .$day . "</tb>";
+                    $this->html .= "</tr>";
                 }
                 $day++;
             }
             $this->html .= "</tr>";
-
-
-
-
-            
-
-        return $this->html .= '</table>';
+        }
+        $this->html .= '</table>';
+        return $this->html;
     }
-  }
 }

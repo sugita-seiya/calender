@@ -15,6 +15,7 @@
         <button type="submit" class="btn btn-primary">登録</button>
         <input type="hidden" name="id" value="{{$data->id}}">
     </form>
+    <!-- バリデーション表示 -->
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -37,18 +38,21 @@
         <tbody>
             @foreach($list as $val)
                 <tr>
+                    <!-- 日付のリンクをつける -->
                     <th scope="row"><a href="{{ url('/holiday/'.$val->id) }}">{{$val->day}}</a></th>
                     <td>{{$val->description}}</td>
                     <td>{{$val->created_at}}</td>
                     <td>{{$val->updated_at}}</td>
-                    <!-- 日付のリンクをつける -->
+                    <!-- 休日のdelete処理 -->
+                    <td>
+                        <form action="/holiday" method="post">
+                            <input type="hidden" name="id" value="{{$val->id}}">
+                            <button class="btn btn-default" type="submit">Delete</button>
+                            {{ method_field('delete') }}
+                            {{csrf_field()}}
+                        </form>
+                    </td>
                 </tr>
-                <td><form action="/holiday" method="post">
-                    <input type="hidden" name="id" value="{{$val->id}}">
-                    {{ method_field('delete') }}
-                    {{csrf_field()}}
-                    <button class="btn btn-default" type="submit">Delete</button>
-                </form></td>
             @endforeach
         </tbody>
     </table>
