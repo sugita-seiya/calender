@@ -27,7 +27,7 @@ class CalendarController extends Controller
         return view('calendar.holiday', ['list' => $list, 'data' => $data]);
     }
 
-    // POSTで受信した休日データの登録
+    // 休日データの登録
     public function postHoliday(Request $request)
     {
         // バリデーション設定
@@ -35,6 +35,7 @@ class CalendarController extends Controller
             'day' => 'required|date_format:Y-m-d',
             'description' => 'required',
         ]);
+        // POSTで受信した休日データの登録
         if (isset($request->id)) {
             $holiday = Holiday::where('id', '=', $request->id)->first();
             $holiday->day = $request->day;
@@ -42,9 +43,9 @@ class CalendarController extends Controller
             $holiday->save();
         } else {
             $holiday = new Holiday();
-            $holiday->day = $request->day;
-            $holiday->description = $request->description;
-            $holiday->save();
+            $holiday->day = $request->day;                      //日付欄取得
+            $holiday->description = $request->description;      //説明欄取得
+            $holiday->save();                                   //DBへ保存
         }
         // 休日データ取得
         $data = new Holiday();

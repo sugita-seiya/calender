@@ -40,28 +40,27 @@ class Calendar extends Model
         $day= 1 - $firstWeekDay;
         // ヒアドキュメント
         $this->html = <<< EOS
-<h1>
+<h2>
 <a class="btn btn-primary" href="/?year={$prev_year}&month={$prev_month}" role="button">&lt;前月</a>
 {$year}年{$month}月
 <a class="btn btn-primary" href="/?year={$next_year}&month={$next_month}" role="button">翌月&gt;</a>
-</h1>
-<h1>{$year}年{$month}月</h1>
-<table class="table table-bordered">
+</h2>
+<table class="table table-bordered" style="table-layout:fixed;">
 <tr>
-    <th scope="col">日</th>
-    <th scope="col">月</th>
-    <th scope="col">火</th>
-    <th scope="col">水</th>
-    <th scope="col">木</th>
-    <th scope="col">金</th>
-    <th scope="col">土</th>
+<th scope="col">日</th>
+<th scope="col">月</th>
+<th scope="col">火</th>
+<th scope="col">水</th>
+<th scope="col">木</th>
+<th scope="col">金</th>
+<th scope="col">土</th>
 </tr>
 EOS;
         // カレンダーの日付部分を生成する。
-        while ($day <= $lastDay){
-            $this->html.="<tr>";
+        while ($day <= $lastDay) {
+            $this->html .= "<tr>";
             // 各週を描画するHTMLソースを生成する
-            for ($i = 0; $i<7; $i++){
+            for ($i = 0; $i < 7; $i++) {
                 if ($day <= 0 || $day > $lastDay) {
                     //先月・来月の日付の場合
                     $this->html .= "<td>&nbsp;</td>";
@@ -74,7 +73,7 @@ EOS;
                             break;
                         }
                     }
-                    $this->html .= "</tr>";
+                    $this->html .= "</tb>";
                 }
                 $day++;
             }
